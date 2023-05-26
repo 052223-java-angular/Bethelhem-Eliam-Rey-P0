@@ -16,12 +16,16 @@ import lombok.ToString;
 public class User {
     private String password;
     private String username;
+    //private String hashedPassword;
+    private String salt;
     private String id;  
 
-    public User(String username, String password) {
+    public User(String username, String password,String salt) {
         this.id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
+        this.salt=salt;
         
     }
+    
 }

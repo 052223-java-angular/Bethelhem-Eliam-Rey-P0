@@ -1,4 +1,6 @@
-package com.revature.app.models;
+package com.revature.app.utils;
+
+import com.revature.app.models.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +14,18 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Session {
+    private User user;
     // 1, 2, 3, 4...... 10000
     private String id;
     private String username;
-    
+
+
     public void setSession(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         
+    }
+    public void clearSession() {
+         user = null;
     }
 }

@@ -1,5 +1,6 @@
 package com.revature.app.services;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,12 +16,22 @@ public class UserService {
 
 
     public User register(String username, String password) {
-        
-        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-        User user = new User(username, hashed);
+
+        String salt = BCrypt.gensalt();
+        String hashedpassword = BCrypt.hashpw(password,salt);
+        User user = new User(username, hashedpassword,salt);
         userDao.save(user);
         return user;
     }
+    //public void login(User user) throws ClassNotFoundException, IOException{
+         //userDao.findByUsername(user.getUsername());
+        public User login(String username) throws ClassNotFoundException, IOException {
+            Optional<User> userOpt = userDao.findByUsername(username);
+            return userOpt.orElse(null);
+        
+        
+    }
+    
 
     public boolean isValidUsername(String username){
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");

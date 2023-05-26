@@ -2,7 +2,10 @@ package com.revature.app.screens;
 
 import java.util.Scanner;
 
-import com.revature.app.models.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.revature.app.utils.Session;
 import com.revature.app.models.User;
 import com.revature.app.services.RouterService;
 import com.revature.app.services.UserService;
@@ -14,12 +17,13 @@ public class RegisterScreen implements IScreen {
     private final UserService userservice;
     private final RouterService router;
     private final Session session;
-    //private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
+    private static final Logger logger = LogManager.getLogger(RegisterScreen.class);
 
     @Override
     public void start(Scanner sc) {
      String username="";
      String password="";
+     logger.info("Start registration process...");
 
      exit:{
         while(true){
@@ -33,6 +37,7 @@ public class RegisterScreen implements IScreen {
             //get password
             password=getPassword(sc);
             if(password.equals("x")){
+                logger.info("Exit registration Screen");
                 break exit;
             }
             //confirm user's info
@@ -44,18 +49,21 @@ public class RegisterScreen implements IScreen {
 
                 switch (sc.nextLine()) {
                     case "y":
+                    logger.info("User confirm credentials are correct");
                         User createdUser = userservice.register(username, password);
                         session.setSession(createdUser);
                         router.navigate("/product", sc);
                         break exit;
 
                     case "n":
+                    logger.info("restarting registration process...");
                         clearScreen();
                         System.out.println("Restarting process...");
                         System.out.print("\nPress enter to continue...");
                         sc.nextLine();
                         break;
                     default:
+                    logger.warn("Invalid option");
                         clearScreen();
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
@@ -81,6 +89,7 @@ public class RegisterScreen implements IScreen {
         username=sc.nextLine();
 
         if(!userservice.isValidUsername(username)){
+            logger.warn("Invalid username for: {}",username);
             clearScreen();
             System.out.println("Username needs tobe 8-20 char long");
             System.out.println("\nPress Enter to continue... ");

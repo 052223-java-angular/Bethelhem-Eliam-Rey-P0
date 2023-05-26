@@ -2,7 +2,7 @@ package com.revature.app.screens;
 
 import java.util.Scanner;
 
-import com.revature.app.models.Session;
+import com.revature.app.utils.Session;
 
 public class ProductScreen implements IScreen{
     private Session session;

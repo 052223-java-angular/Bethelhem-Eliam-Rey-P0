@@ -18,12 +18,13 @@ public class UserDAO implements Dao_interface<User> {
     @Override
     public void save(User obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "INSERT INTO users (id, username, password) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (id, username, password,salt) VALUES (?, ?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUsername());
                 ps.setString(3, obj.getPassword());
+                ps.setString(4, obj.getSalt());
             
                 ps.executeUpdate();
             }
@@ -89,6 +90,6 @@ public class UserDAO implements Dao_interface<User> {
         }
 
         return Optional.empty();
-    }
 
+    }
 }
