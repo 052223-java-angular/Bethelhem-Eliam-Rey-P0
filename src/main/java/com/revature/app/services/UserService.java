@@ -25,7 +25,7 @@ public class UserService {
     }
     //public void login(User user) throws ClassNotFoundException, IOException{
          //userDao.findByUsername(user.getUsername());
-        public User login(String username) throws ClassNotFoundException, IOException {
+    public User login(String username) throws ClassNotFoundException, IOException {
             Optional<User> userOpt = userDao.findByUsername(username);
             return userOpt.orElse(null);
         

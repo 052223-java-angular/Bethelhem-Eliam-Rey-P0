@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RouterService {
   private Session session;
-  private LoginService loginService;
   private User user;
     public void navigate(String path,Scanner sc) {
         switch(path){
@@ -23,7 +22,7 @@ public class RouterService {
               new HomeScreen(this).start(sc);
               break;
             case "/login":
-            new LoginScreen(getUserService(), this, session,loginService).start(sc);
+            new LoginScreen(getUserService(),this,session).start(sc);
               break;
             case "/register":
               new RegisterScreen(getUserService(), this, session).start(sc);
@@ -34,7 +33,7 @@ public class RouterService {
               new ProductScreen(session).start(sc);
               break;
             case "/logout":
-              session.clearSession(); // Clear the current session
+              //session.clearSession(); // Clear the current session
               System.out.println("You have been logged out.");
               break;
             default:

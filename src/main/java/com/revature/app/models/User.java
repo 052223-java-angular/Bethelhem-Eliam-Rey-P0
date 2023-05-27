@@ -16,7 +16,6 @@ import lombok.ToString;
 public class User {
     private String password;
     private String username;
-    //private String hashedPassword;
     private String salt;
     private String id;  
 

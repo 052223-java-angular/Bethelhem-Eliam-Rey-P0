@@ -9,7 +9,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.revature.app.utils.Session;
 import com.revature.app.models.User;
-import com.revature.app.services.LoginService;
 import com.revature.app.services.RouterService;
 import com.revature.app.services.UserService;
 
@@ -17,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class LoginScreen implements IScreen{
-    private final LoginService loginservice;
+    private final UserService userservice;
     private final RouterService router;
     private final Session session;
     //private final User user;
@@ -35,57 +34,54 @@ public void start(Scanner sc) {
         while (true) {
             //clearScreen();
             System.out.println("WELCOME TO LOGIN PAGE");
-            //sc.nextLine();
+            sc.nextLine();
 
             // Get username
             username = getUsername(sc);
 
             // Get password
             password = getPassword(sc);
-            //System.out.println(username);
-            //System.out.println(password);
             try {
-                User user = loginservice.login(username);
-                if (user != null) {
-                    String storedSalt = user.getSalt();
-                    String storedHashedPassword = user.getPassword();
-
-                    boolean passwordsMatch = storedSalt != null && BCrypt.checkpw(password, storedHashedPassword);
-                    System.out.println(passwordsMatch);
-                
-                    if (passwordsMatch) {
-                        System.out.println("YOU ARE SUCCESSFULLY LOGGED IN TO E-SHOPPING");
-                        logger.info("logged...");
-                        while (true) {
-                            clearScreen();
-                            System.out.println("LOGIN SUCCESSFUL");
+                User user = userservice.login(username);
+                String storedHashedPassword = user.getPassword();
+                boolean passwordsMatch = BCrypt.checkpw(password, storedHashedPassword);
+                if ((user != null) && passwordsMatch) {
+                      clearScreen();
+                      logger.info("------LOGGED IN -----");
+                        
+                            System.out.println("YOU ARE SUCCESSFULLY LOGGED IN TO E-SHOPPING");
+                            System.out.println();
+                            System.out.println("*************************************************************************************");
+                            System.out.println("*************************************************************************************");
+                            System.out.println();
                             System.out.println("1. View Products");
                             System.out.println("2. Logout");
+                            System.out.println();
 
                             System.out.print("Enter your choice: ");
+                            System.out.println();
                             int choice = sc.nextInt();
                             sc.nextLine(); 
 
                             switch (choice) {
                                 case 1:
+                                    clearScreen();
                                     router.navigate("/product", sc);
                                     break;
                                 case 2:
                                     logger.info("Logout");
+                                    router.navigate("/logout", sc);
                                     break ;
                                 default:
                                     System.out.println("Invalid choice");
                             }
                         }
-                    } else {
+                    else  {
                         // Invalid credentials
-                        System.out.println("INVALID PASSWORD");
+                        clearScreen();
+                        System.out.println("INCORRECT USER OR PASSWORD ");
+                        
                     }
-                } else {
-                    // Invalid username
-                    System.out.println("INVALID USERNAME");
-                }
-
                 break exit;
             } catch (IOException | ClassNotFoundException e) {
                 logger.error("Error occurred during login: {}", e.getMessage());
@@ -98,11 +94,11 @@ public void start(Scanner sc) {
     /*-----------------------HELPER METHOD---------------- */
     public String getUsername(Scanner sc){
         String username="";
-        //while(true){
+        while(true){
             System.out.println("Enter user name: ");
             username=sc.nextLine();
     
-            /*if(!userservice.isValidUsername(username)){
+            if(!userservice.isValidUsername(username)){
                 logger.warn("Invalid username for: {}",username);
                 clearScreen();
                 System.out.println("Username needs tobe 8-20 char long");
@@ -111,18 +107,19 @@ public void start(Scanner sc) {
                 continue;
         }
             break;
-        }*/
+        }
     
         return username;
     }
      
      public String getPassword(Scanner sc){
         String password ="";
-       // while (true) {
+        while (true) {
             System.out.print("\nEnter a password: ");
             password = sc.nextLine();
 
-     /* 
+
+
     
             if (!userservice.isValidPassword(password)) {
                 clearScreen();
@@ -133,8 +130,9 @@ public void start(Scanner sc) {
             }
     
            
-            break;*/
-       // }
+            break;
+        }
+        clearScreen();
         return password;
     
      }
