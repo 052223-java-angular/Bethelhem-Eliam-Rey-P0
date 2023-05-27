@@ -49,6 +49,7 @@ public class RegisterScreen implements IScreen {
 
                 switch (sc.nextLine()) {
                     case "y":
+                    clearScreen();
                     logger.info("User confirm credentials are correct");
                         User createdUser = userservice.register(username, password);
                         session.setSession(createdUser);

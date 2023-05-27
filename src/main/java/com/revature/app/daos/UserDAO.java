@@ -18,13 +18,13 @@ public class UserDAO implements Dao_interface<User> {
     @Override
     public void save(User obj) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "INSERT INTO users (id, username, password,salt) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO users (id, username, password) VALUES (?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
                 ps.setString(2, obj.getUsername());
                 ps.setString(3, obj.getPassword());
-                ps.setString(4, obj.getSalt());
+                //ps.setString(4, obj.getSalt());
             
                 ps.executeUpdate();
             }
@@ -62,7 +62,7 @@ public class UserDAO implements Dao_interface<User> {
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
-    public Optional<User> findByUsername(String username) {
+    public User findByUsername(String username) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
@@ -76,7 +76,7 @@ public class UserDAO implements Dao_interface<User> {
                         user.setUsername(rs.getString("username"));
                         user.setPassword(rs.getString("password"));
                         
-                        return Optional.of(user);
+                        return user;
                     }
                 }
             }
@@ -89,7 +89,7 @@ public class UserDAO implements Dao_interface<User> {
             throw new RuntimeException("Unable to load jdbc");
         }
 
-        return Optional.empty();
+        return null;
 
     }
 }

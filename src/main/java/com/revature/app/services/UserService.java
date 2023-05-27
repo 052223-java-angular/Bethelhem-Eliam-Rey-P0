@@ -23,16 +23,7 @@ public class UserService {
         userDao.save(user);
         return user;
     }
-    //public void login(User user) throws ClassNotFoundException, IOException{
-         //userDao.findByUsername(user.getUsername());
-    public User login(String username) throws ClassNotFoundException, IOException {
-            Optional<User> userOpt = userDao.findByUsername(username);
-            return userOpt.orElse(null);
-        
-        
-    }
     
-
     public boolean isValidUsername(String username){
         return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
     }
@@ -40,9 +31,9 @@ public class UserService {
     
 
     public boolean isUniqueUsername(String username) {
-         Optional<User> userOpt = userDao.findByUsername(username);
+         User userOpt = userDao.findByUsername(username);
 
-         if (userOpt.isEmpty()) {
+         if (userOpt==null) {
             return true;
         }
     

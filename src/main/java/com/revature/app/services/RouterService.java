@@ -15,14 +15,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RouterService {
   private Session session;
-  private User user;
+ private User user;
     public void navigate(String path,Scanner sc) {
         switch(path){
             case "/home":
               new HomeScreen(this).start(sc);
               break;
             case "/login":
-            new LoginScreen(getUserService(),this,session).start(sc);
+            new LoginScreen(getLoginService(),this).start(sc);
               break;
             case "/register":
               new RegisterScreen(getUserService(), this, session).start(sc);
@@ -33,7 +33,7 @@ public class RouterService {
               new ProductScreen(session).start(sc);
               break;
             case "/logout":
-              //session.clearSession(); // Clear the current session
+              clearScreen();
               System.out.println("You have been logged out.");
               break;
             default:
@@ -44,4 +44,11 @@ public class RouterService {
     private UserService getUserService() {
       return new UserService(new UserDAO());
   }
+  private LoginService getLoginService() {
+    return new LoginService(new UserDAO());
+}
+private void clearScreen(){
+  System.out.println("\033[H\033[2J");
+  System.out.flush();
+}
 }

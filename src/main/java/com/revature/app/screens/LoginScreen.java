@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.revature.app.utils.Session;
 import com.revature.app.models.User;
+import com.revature.app.services.LoginService;
 import com.revature.app.services.RouterService;
 import com.revature.app.services.UserService;
 
@@ -16,14 +17,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class LoginScreen implements IScreen{
-    private final UserService userservice;
-    private final RouterService router;
-    private final Session session;
-    //private final User user;
-    private static final Logger logger = LogManager.getLogger(LoginScreen.class);
+   // private UserService userservice;
+    private LoginService loginService;
+    private RouterService router;
+    //private final Session session;
     
-
-
+    private static final Logger logger = LogManager.getLogger(LoginScreen.class);
 @Override
 public void start(Scanner sc) {
     String username = "";
@@ -36,16 +35,13 @@ public void start(Scanner sc) {
             System.out.println("WELCOME TO LOGIN PAGE");
             sc.nextLine();
 
-            // Get username
             username = getUsername(sc);
-
-            // Get password
             password = getPassword(sc);
             try {
-                User user = userservice.login(username);
+                User user = loginService.login(username);
                 String storedHashedPassword = user.getPassword();
                 boolean passwordsMatch = BCrypt.checkpw(password, storedHashedPassword);
-                if ((user != null) && passwordsMatch) {
+                if ((user!= null) && passwordsMatch) {
                       clearScreen();
                       logger.info("------LOGGED IN -----");
                         
@@ -97,10 +93,10 @@ public void start(Scanner sc) {
         while(true){
             System.out.println("Enter user name: ");
             username=sc.nextLine();
+            
     
-            if(!userservice.isValidUsername(username)){
-                logger.warn("Invalid username for: {}",username);
-                clearScreen();
+            if(!(username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$")))
+               { clearScreen();
                 System.out.println("Username needs tobe 8-20 char long");
                 System.out.println("\nPress Enter to continue... ");
                 sc.nextLine();
@@ -117,19 +113,6 @@ public void start(Scanner sc) {
         while (true) {
             System.out.print("\nEnter a password: ");
             password = sc.nextLine();
-
-
-
-    
-            if (!userservice.isValidPassword(password)) {
-                clearScreen();
-                System.out.println("Password needs to be minimum 8 characters, at least 1 letter and 1 number");
-                System.out.print("\nPress enter to continue...");
-                sc.nextLine();
-                continue;
-            }
-    
-           
             break;
         }
         clearScreen();

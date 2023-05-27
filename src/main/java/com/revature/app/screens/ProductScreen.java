@@ -7,11 +7,6 @@ import com.revature.app.utils.Session;
 public class ProductScreen implements IScreen{
     private Session session;
 
-    /**
-     * Constructs a new MenuScreen with the specified Session.
-     *
-     * the Session containing user information
-     */
     public ProductScreen(Session session) {
         this.session = session;
     }
@@ -22,11 +17,4 @@ public class ProductScreen implements IScreen{
         sc.nextLine();
     }
 
-/* 
-
-    private void clearScreen(){
-        System.out.println("\033[H\033[2J");
-        System.out.flush();
-    }
-    */
 }
