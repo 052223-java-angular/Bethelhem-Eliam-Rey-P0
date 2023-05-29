@@ -1,23 +1,23 @@
--- DROP TABLE IF EXISTS ecommerce.users CASCADE;
--- DROP TABLE IF EXISTS ecommerce.products CASCADE;
--- DROP TABLE IF EXISTS ecommerce.shopping_cart CASCADE;
--- DROP TABLE IF EXISTS ecommerce.cart_items CASCADE;
--- DROP TABLE IF EXISTS ecommerce.order_history CASCADE;
--- DROP TABLE IF EXISTS ecommerce.order_items CASCADE;
--- DROP TABLE IF EXISTS ecommerce.reviews CASCADE;
--- DROP TABLE IF EXISTS ecommerce.roles CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS shopping_cart CASCADE;
+DROP TABLE IF EXISTS order_history CASCADE;
+DROP TABLE IF EXISTS order_items CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS roles CASCADE;
+DROP TABLE IF EXISTS cart_items CASCADE;
 
 CREATE TABLE roles (
-    "role_id" VARCHAR PRIMARY KEY,
-    "name" VARCHAR NOT NULL
+    role_id VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL
 );
 
 CREATE TABLE users(
-    "id" VARCHAR PRIMARY KEY,
-    "username" VARCHAR NOT NULL UNIQUE,
-    "password" VARCHAR NOT NULL,
-    "role_id" VARCHAR NOT NULL,
-    FOREIGN KEY (role_id) REFERENCES roles (id)
+    id VARCHAR PRIMARY KEY,
+    username VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    role_id VARCHAR NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
 
 CREATE TABLE shopping_cart(
@@ -28,8 +28,8 @@ CREATE TABLE shopping_cart(
 
 CREATE TABLE products(
     product_id VARCHAR PRIMARY KEY,
-    "name" VARCHAR NOT NULL,
-    "description" VARCHAR NOT NULL,
+    name VARCHAR NOT NULL,
+    description VARCHAR NOT NULL,
     price MONEY,
     rating INT,
     category1 VARCHAR NOT NULL,
@@ -67,8 +67,8 @@ CREATE TABLE order_items(
 CREATE TABLE reviews(
     review_id VARCHAR PRIMARY KEY,
     product_id VARCHAR NOT NULL,
-    "username" VARCHAR NOT NULL,
-    "message" VARCHAR NOT NULL,
+    username VARCHAR NOT NULL,
+    message VARCHAR NOT NULL,
     rating int,
     FOREIGN KEY (product_id) REFERENCES products (product_id)
 );

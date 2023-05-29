@@ -19,9 +19,12 @@ public class UserService {
   }
 
   public boolean isUniqueUsername(String username) {
-    Optional<User> userOpt = userDao.findByUsername(username);
+    User userOpt = userDao.findByUsername(username);
 
-    return userOpt.isEmpty();
+    if (userOpt==null) {
+       return true;
+   }
+   return false;
   }
 
   public boolean isValidPassword(String password) {
