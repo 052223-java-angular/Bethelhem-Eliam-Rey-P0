@@ -25,9 +25,16 @@ public class ProductScreen implements IScreen {
         System.out.println("Welcome to the Product Screen");
         username = scan.toString();
 
-        System.out.println("Display all products? \n[y] [n]");
-        switch (scan.nextLine().toLowerCase()) {
-          case "y":
+        System.out.println("\n[1] Display all products");
+        System.out.println("[2] Search for specific product");
+        System.out.println("[x] Exit");
+        System.out.print("Enter your choice: ");
+        System.out.println();
+
+        input=scan.nextLine(); 
+        
+        switch(input.toLowerCase()){ 
+          case "1":
             List<Product> prod = productService.getAllProducts();
             if (prod.size() == 0) {
               System.out.println("No products to display");
@@ -36,13 +43,15 @@ public class ProductScreen implements IScreen {
                 System.out.println(prod.get(i).toString());
               }
             }
-            break exit;
-          case "n":
-            clearScreen();
-            System.out.println("Restarting process...");
-            System.out.print("\nPress enter to continue...");
-            scan.nextLine();
+            break ;
+          case "2":
+            clearScreen(); 
+            router.navigate("/searchproduct", scan);
             break;
+          case "x":
+             clearScreen(); 
+             router.navigate("/home", scan);
+             break;
           default:
             clearScreen();
             System.out.println("Invalid option!");
@@ -54,7 +63,8 @@ public class ProductScreen implements IScreen {
     }
   }
 
-  private void clearScreen() {
+private void clearScreen(){
+    System.out.println("\033[H\033[2J");
     System.out.flush();
   }
 }
